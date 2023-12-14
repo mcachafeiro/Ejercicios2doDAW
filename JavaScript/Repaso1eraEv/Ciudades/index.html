@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="worldcities.js"></script>
+</head>
+<body>
+    <script>
+        const arraycsv= cvsAMatriz();
+        const cabecera= extraerCabecera();
+        const arrObjs= arrayAObj();
+        let tabla = crearTabla(arrObjs);
+        function cvsAMatriz(sepReg="\n",sepCamp=";"){
+            return datos
+                        .split(sepReg)
+                        .filter(linea=>linea.trim())
+                        .map(linea=>linea.trim()
+                                          .split(sepCamp)); 
+        }
+        function extraerCabecera(){
+            return arraycsv.shift();
+        }
+        function arrayAObj(){
+            return arraycsv.map(v=>v.reduce((acc,campo,p)=>{
+                acc[cabecera[p]]=campo;
+                return acc;
+            },{}));
+        } 
+        function filtrarPorCampo(arrObjs,campo,valor){
+            return arrObjs.filter(ciuda=>ciuda[campo]==valor);
+        }
+        function ordenarPorCampo(arrObjs,campo){
+            arrObjs.sort((a,b)=>a[campo]>b[campo]?1:-1);
+        }
+        function crearTabla(arrObjs){
+            let tabla = crearNodo("table");
+            let theader = crearNodo("thead");
+            let trh= crearNodo("tr");
+            for(clave in arrObjs[0]){
+                let th= crearNodo("th",clave);
+                th.setAttribute("class",clave);
+                th.style.cursor="Pointer";
+                th.addEventListener("click",siClickeas);
+                trh.appendChild(th);
+            }
+            tabla.appendChild(theader);
+            theader.appendChild(trh);
+            let tbody= crearNodo("tbody");
+            arrObjs.forEach(obj => {
+                let trb = crearNodo("tr");
+                for(clave in obj){
+                    let td=crearNodo("td",obj[clave]);
+                    trb.appendChild(td);
+                }
+                tbody.appendChild(trb);
+            });
+            tabla.appendChild(tbody);
+            return tabla;
+            function crearNodo(elemento,contenido){
+                let nodo = document.createElement(elemento);
+                (contenido)&&nodo.appendChild(document.createTextNode(contenido));
+                return nodo;
+            }
+        }
+        document.body.appendChild(crearTabla(arrObjs));
+        function siClickeas(evt){
+            let elemento = evt.currentTarget;
+            let clas = elemento.getAttribute("class");
+            ordenarPorCampo(arrObjs,clas);
+            repintar(arrObjs);
+        }
+        function repintar(arrObjs){
+            document.body.querySelector("table").replaceWith(crearTabla(arrObjs));
+        }
+    </script>
+</body>
+</html>
