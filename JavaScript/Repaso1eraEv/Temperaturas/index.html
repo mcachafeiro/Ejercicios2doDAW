@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        const temperaturas = `
+            Fecha;Tmin;Tmax
+
+            2023/10/20; 20; 33;
+            2023/10/21; 22; 30;
+            2023/10/22; 18; 38;
+            2023/10/23; 20; 30;
+
+            2023/10/24;; 35;
+            2023/10/25; 14; 20;
+            2023/10/26; 10; 15
+            2023/10/27; 10; 14;
+            2023/10/28;  0; 14;
+        
+        `;
+         // Funciones: Tmin_media, Tmax_media, Tmin_min(cual es y el dia), Tmax_max(cual es y el dia), ordenar por fechas
+        let arrayTemp = csvAArray(temperaturas);
+        const cabecera = extraerCabecera(arrayTemp);
+        const arrayObjetos = arrayAObj(arrayTemp,cabecera);
+        const tminMedia= tmin_media(arrayObjetos,"Tmin");
+        const tmaxMedia= tmax_media(arrayObjetos,"Tmax");
+        const arrayObjsOrdenado = ordenar(arrayObjetos); 
+        
+        function csvAArray(temp){
+            return temp.split("\n")
+                       .map(v=> v.trim()) 
+                       .filter(v => v!=="")
+                       .map(v=>v.split(";")
+                                .filter(v=>v.trim().length))
+                       .filter(v=>v.length===3);  
+        }
+        function extraerCabecera(arrai){
+            return arrai.shift();
+        }
+        function arrayAObj(arrai,cab){
+            return  arrai.map(dato=>dato.reduce(function(acc,v,p){
+                acc[cab[p]]=v;
+                return acc;
+            },{}));
+        }
+        function media(objs, prop) {
+            return objs.reduce(function (acc, obj) {
+                return Number(obj[prop]) + acc;
+            }, 0) / objs.length;
+        }
+        function tmax_media(array){
+            return media(array,"Tmax");
+        }
+        function tmin_media(array){
+            return media(array,"Tmin");
+        }
+        function ordenar(arrObjetosCSV){
+            return arrObjetosCSV.sort(function(a,b){
+                return a.Fecha-b.Fecha;
+            });
+        }
+        function tmin_min(array){
+            return array.reduce(function(acc,v){
+                    return (acc<v["Tmin"])?acc:v["Tmin"];
+                },array[0]["Tmin"]);
+
+        }
+        function tmin_max(array){
+            return array.reduce(function(acc,v){
+                return (acc>v["Tmax"])?acc:v["Tmax"];
+            },array[0]["Tmax"]);
+        }
+        function tabla(arrayObjsOrdenado){
+            var tb=crearNodo("table");
+            var tr = crearNodo("tr");
+            var claves= Object.keys(arrayObjsOrdenado[0]);
+            for(let i=0;i<claves.length;i++){
+                var th =crearNodo("th",claves[i]);
+                th.classList.add(claves[i]);
+                th.addEventListener("click",clickear);
+                th.style.cursor="Pointer";
+                th.style.border="2px red dashed"
+                tr.appendChild(th);
+            }
+            tb.appendChild(tr);
+            arrayObjsOrdenado.forEach(function(obj){
+                tr = crearNodo("tr");
+                for(let clave in obj){
+                    var td = crearNodo("td",obj[clave]);
+                    td.style.border="2px blue solid";
+                    tr.appendChild(td);
+                }
+                tb.appendChild(tr);
+            });
+
+ 
+
+            let tfoot = crearNodo("tfoot");
+            let trf = crearNodo("tr","Temp mínima"+tmin_min(arrayObjetos));
+            tb.appendChild(trf);
+            let trf2= crearNodo("tr","Temp máxima"+tmin_max(arrayObjetos));
+            tb.appendChild(trf2);
+            let trf3 = crearNodo("tr","Media máxima"+tmax_media(arrayObjetos));
+            tb.appendChild(trf3);
+            let trf4 = crearNodo("tr","Media mínima"+tmin_media(arrayObjetos));
+            tb.appendChild(trf4);
+
+            return tb; 
+
+            function crearNodo(elemento,contenido){
+                let nodo=document.createElement(elemento);
+                (contenido&&nodo.appendChild(document.createTextNode(contenido)));
+                return nodo;
+            }
+
+        }
+        document.body.appendChild(tabla(arrayObjsOrdenado));
+        function clickear(evt){
+     
+            const elem= evt.currentTarget;
+            const clase = elem.getAttribute("class");
+            ordenarPorClick(clase);
+            renovarTabla();
+        }
+        function ordenarPorClick(clas){
+            arrayObjsOrdenado.sort((a, b) => a[clas] > b[clas] ? (clas !== 'Tmax' ? 1 : -1) : (clas !== 'Tmax' ? -1 : 1));
+        }
+        function renovarTabla(){
+            document.body.replaceChild(tabla(arrayObjsOrdenado),document.body.querySelector("table"));
+        }
+    </script>
+
+</body>
+</html>
