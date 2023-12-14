@@ -1,0 +1,213 @@
+h1,h2,img,p,span,ul,li,div,figure,footer,section,article,header,nav{
+    margin:0;
+    padding: 0;
+}
+body{
+    padding: 2.13% 10%;
+    font-family: 'Poppins',sans-serif;
+}
+nav>*{
+    display: inline-block;
+}
+nav > :nth-last-child(-n+2){
+    font-weight: bold;
+}
+nav > p{
+    font-size: 36px;
+    margin-right: 10%; 
+}
+nav > ul{
+    text-align: center;
+    width: 50%;
+}
+nav > ul >li{
+    display: inline;
+    list-style: none;
+    font-size: 20px;
+    margin: 0 4%;
+    color: #787282;
+}
+nav> ul> :first-child{
+    color: #1A093E;
+}
+nav > :last-child{
+    background-color: transparent;
+    border: 3px solid #3F41A6;
+    padding: 10px;
+    border-radius: 16.5px;
+    float: right;
+}
+nav > :last-child > p{
+    color :#3F41A6;
+    font-size: 20px;
+}
+nav > :last-child > * {
+    display: inline-block;
+}
+nav > :last-child > figure{
+    width: 0;
+    height: 0;
+    border-left: 20px solid #3F41A6;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+}
+section{
+    padding:170px 0;
+}
+section > article:first-of-type> :first-child{
+    float: left;
+    width: 37%;
+}
+section > article:first-of-type> :first-child > :first-child{
+    color: #1A093C;
+    font-weight: bold;
+    font-size: 94px;
+    margin-bottom: 35px;
+}
+section > article:first-of-type> :first-child > p{
+    color:#1A093C;
+    font-size: 18px;
+    margin-bottom: 35px;
+}
+section > article:first-of-type > :first-child > :last-child,section > :last-child > :last-child > :nth-child(4){
+    background-color: #3F41A6;
+    border: none;
+    color: white;
+    font-size: 20px;
+    border-radius: 50px;
+    padding: 20px 40px;
+}
+section > article:first-of-type > :first-child > :last-child > *,section > :last-child > :last-child > :nth-child(4)>*{
+    display: inline-block;
+}
+section > article:first-of-type > :first-child > :last-child > figure,section > :last-child > :last-child > :nth-child(4)>figure{
+    background-color: rgba(249,249,252,0.35);
+    padding: 5px;
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+}
+.tresfotos{
+    width: 57%;
+    float: right;
+    padding-top: 20px;
+}
+.tresfotos>:first-child{
+    width: 100%;
+}
+.tresfotos> :nth-child(2){
+    width: 41%;
+    margin-right: 3%;
+}
+.tresfotos >:last-child{
+    width: 55%;
+}
+.clearfix::after{
+    content: "";
+    display: block;
+    clear: both;
+}
+section > :last-child{
+    margin-top: 15vw;
+}
+.sim{
+    float: left;
+    width: 17%;
+    height: 33vw;
+    padding-right: 70px;
+}
+.sim > *{
+   display: inline-block;
+   border-radius: 20px;
+   background-color: green;
+}
+.sim > :nth-child(n+2){
+    margin-top: 17px;
+}
+.sim >:first-child,.sim >:last-child{
+    width: 44%;
+    height: 6vw;
+}
+.sim >:nth-child(2){
+    width: 100%;
+    height: 9.5vw;
+}
+.sim >:nth-child(3){
+    width: 100%;
+    height: 6vw;
+}
+.sim >:last-child{
+    float: right;
+}
+section > :last-child{
+    width: 90%;
+}
+section > :last-child > img {
+    width: 236px;
+}
+section > :last-child > :last-child{
+    float: right;
+    width: 40%;
+}
+section > :last-child > :last-child > :first-child{
+    color:#3F41A6;
+    font-weight: bold;
+    font-size: 20px;
+}
+section > :last-child > :last-child > :nth-child(2){
+    color:#1A093C;
+    font-weight: bold;
+    font-size: 48px;
+    margin-top: 35px;
+}
+section > :last-child > :last-child > :nth-child(3){
+    color:#1A093C;
+    font-size: 18px;
+    margin-top: 35px;
+    margin-bottom: 45px;
+}
+footer{
+    text-align: center;
+    padding: 0 2%;
+    margin-bottom: 200px;
+}
+footer h2{
+    font-size: 48px;
+    font-weight: bold;
+    color: #1A093C;
+    margin-bottom: 60px;
+}
+footer ul li{
+    display: inline-block;
+    list-style: none;
+    width: 23%;
+    color: #1A093C;
+    margin: 0 5%;
+}
+footer ul li p:first-of-type{
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+footer ul li p:last-child{
+    font-size: 18px;
+}
+.cont{
+    width: 100%;
+}
+.cont>:first-child{
+    width: 40%;
+    height: 1000px;
+}
+.cont > :first-child >:first-child{
+    width: 100%;
+    background-color: rgba(244,245,249,0.35);
+    height: 100px;
+}
+.cont figure{
+    display: inline-block;
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background-color: #1A093C;
+}
