@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let fechaActual = new Date();
+        
+        function devolverEstructura(){
+            let div = crearNodo("div");
+            div.appendChild(crearBotones());
+            let div2= crearNodo("div");
+            div2.id="calendario";
+            div2.appendChild(crearTabla());
+            div.appendChild(div2);
+            return div;
+        }
+        document.body.appendChild(devolverEstructura());
+        function crearBotones(){
+            let div= crearNodo("div");
+            div.id="botones";
+            let cont=['\u00AB',"\u2039","\u2022","\u203A","\u00BB"];
+            cont.forEach(element => {
+                let btn = crearNodo("button",element);//contrue
+                btn.style.backgroundColor="transparent";
+                btn.addEventListener("click",clickeaste);
+                btn.style.cursor="Pointer";
+                div.appendChild(btn);
+            });
+            return div;
+        }
+        function crearNodo(elemento, contenido,a="false"){
+            const nodo = document.createElement(elemento);
+            (contenido)&&nodo.appendChild(document.createTextNode(contenido));
+            // a&&nodo.innerHTML(contenido);
+            return nodo;
+        }
+        function crearTabla(){
+            let tabla = crearNodo("table");
+            tabla.style.textAlign="center";
+            let caption = crearNodo("caption",titulo());
+            tabla.appendChild(caption);
+            let theader= crearTheader();
+            tabla.appendChild(theader);
+            let tbody = crearTbody();
+            tabla.appendChild(tbody);
+            return tabla;
+        }
+        function titulo(){
+            let mesEspaniol= fechaActual.toLocaleDateString("es-ES",{month:"long"});
+            return mesEspaniol+" "+ fechaActual.getFullYear();
+        }
+        function crearTheader(){
+            let theader= crearNodo("thead");
+            let tr = crearNodo("tr");
+            th = crearNodo("th","sem");
+            tr.appendChild(th);
+            th = crearNodo("th","Lun");
+            tr.appendChild(th);
+            th = crearNodo("th","Mar");
+            tr.appendChild(th);
+            th = crearNodo("th","Mie");
+            tr.appendChild(th);
+            th = crearNodo("th","Jue");
+            tr.appendChild(th);
+            th = crearNodo("th","Vie");
+            tr.appendChild(th);
+            th = crearNodo("th","Sab");
+            tr.appendChild(th);
+            th = crearNodo("th","Dom");
+            tr.appendChild(th);
+            tr.style.color="fuchsia";
+            theader.appendChild(tr);
+            return theader;
+        }
+        function crearTbody(){
+            let tbody = crearNodo("tbody");
+            let semana = getSemanaDelMes();
+            let dia = 1;
+            let diaSemana = new Date(fechaActual.getFullYear(),fechaActual.getMonth(),1).getDay();
+            diaSemana = (diaSemana==0&&7)||diaSemana;
+            let trb = crearNodo("tr");
+            let sem = crearNodo("td",semana++);
+            trb.appendChild(sem);
+            for(let i =0;i<diaSemana-1;i++){
+                let td= crearNodo("td");
+                trb.appendChild(td);
+            }
+            for(let i=diaSemana;i<8;i++){
+                let td= crearNodo("td",dia++);
+                trb.appendChild(td);
+            }
+            tbody.appendChild(trb);
+            for(let i=0;i<4;i++){
+                trb=crearNodo("tr");
+                let td = crearNodo("td",semana++);
+                trb.appendChild(td);
+                for(let j=0;j<7;j++){
+                    if(dia<=diasDelMes()){
+                        td= crearNodo("td",dia++);
+                        if(comprobarDia(dia-1))
+                            td.style.backgroundColor="yellow";
+                        trb.appendChild(td);
+                    }
+                }
+                tbody.appendChild(trb);
+            }
+
+            return tbody;
+        }
+        function diasDelMes(){
+            return new Date(fechaActual.getFullYear(),fechaActual.getMonth()+1,0).getDate();
+        }
+        function getSemanaDelMes(){
+            const fechaAux = new Date(fechaActual.getFullYear(),fechaActual.getMonth(),1)
+            const fechaInicial = new Date(fechaActual.getFullYear(),0,1);
+            const numeroDias = Math.floor((fechaAux - fechaInicial) / (24*60*60*1000));
+            const resultado = Math.ceil((fechaAux.getDay() + 1 + numeroDias)/7);
+            return resultado;
+        }
+        function comprobarDia(dia){
+            let actual = new Date();
+            return dia == actual.getDate()&&fechaActual.getMonth()==actual.getMonth()&&fechaActual.getFullYear()==actual.getFullYear();
+        }
+        function clickeaste(evt){
+            let elem = evt.currentTarget;
+            let clas= elem.innerHTML;
+            palanteOPatras(clas);
+        }
+        function palanteOPatras(clas){
+            switch(clas){
+                case "«":
+                    anoAtras();
+                break;
+                case "‹":
+                    mesAtras();
+                break;
+                case "•":
+                    hoy();
+                break;
+                case "›":
+                    mesAlante();
+                break;
+                case "»":
+                    anoAlante();
+                break;
+            }
+            rePintar();
+        }
+        function anoAtras(){
+            fechaActual= new Date(fechaActual.getFullYear()-1,fechaActual.getMonth(),fechaActual.getDate());
+        }
+        function mesAtras(){
+            fechaActual= new Date(fechaActual.getFullYear(),fechaActual.getMonth()-1,fechaActual.getDate());
+        }
+        function hoy(){
+            fechaActual= new Date();
+        }
+        function mesAlante(){
+            fechaActual= new Date(fechaActual.getFullYear(),fechaActual.getMonth()+1,fechaActual.getDate());
+        }
+        function anoAlante(){
+            fechaActual= new Date(fechaActual.getFullYear()+1,fechaActual.getMonth(),fechaActual.getDate());
+        }
+        function rePintar(){
+            const padre = document.querySelector("table").parentElement;
+            padre.removeChild(padre.firstElementChild);
+            padre.appendChild(crearTabla());
+        }
+    </script>
+</body>
+</html>
